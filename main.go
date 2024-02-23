@@ -1,4 +1,4 @@
-package goupload
+package main
 
 import (
 	"fmt"
