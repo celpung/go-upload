@@ -15,6 +15,57 @@ type UploadedFile struct {
 	Filename string `json:"filename"`
 }
 
+// single upload for file data
+func SingleFileData(data io.Reader, directory, originalFilename string) (*UploadedFile, error) {
+	if _, err := os.Stat(directory); os.IsNotExist(err) {
+		err := os.MkdirAll(directory, os.ModePerm)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	newFilename := generateFilename(originalFilename)
+
+	destFile, err := os.Create(filepath.Join(directory, newFilename))
+	if err != nil {
+		return nil, err
+	}
+	defer destFile.Close()
+
+	_, err = io.Copy(destFile, data)
+	if err != nil {
+		return nil, err
+	}
+
+	uploadedFile := &UploadedFile{
+		Filename: newFilename,
+	}
+
+	return uploadedFile, nil
+}
+
+// multiple upload for file data
+func MultipleFileData(files map[string]io.Reader, directory string) ([]UploadedFile, error) {
+	var uploadedFiles []UploadedFile
+
+	if _, err := os.Stat(directory); os.IsNotExist(err) {
+		err := os.MkdirAll(directory, os.ModePerm)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	for fieldName, fileData := range files {
+		uploadedFile, err := SingleFileData(fileData, directory, fieldName)
+		if err != nil {
+			return nil, err
+		}
+		uploadedFiles = append(uploadedFiles, *uploadedFile)
+	}
+
+	return uploadedFiles, nil
+}
+
 func Single(r *http.Request, directory string, fieldName string) (*UploadedFile, error) {
 	err := r.ParseMultipartForm(30)
 	if err != nil {
