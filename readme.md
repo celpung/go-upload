@@ -1,6 +1,6 @@
 # go-upload
 
-[![Static Badge](https://img.shields.io/badge/Go-blue.svg)](https://go.dev/) [![Static Badge](https://img.shields.io/badge/v1.0.0-blue.svg)](https://go.dev/)
+[![Static Badge](https://img.shields.io/badge/Go-blue.svg)](https://go.dev/) [![Static Badge](https://img.shields.io/badge/v2.0.0-blue.svg)](https://go.dev/)
 
 Go-upload is a Go package for handling file uploads in HTTP requests. It simplifies the process of uploading single or multiple files and saving them to a specified directory.
 
