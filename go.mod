@@ -1,4 +1,4 @@
-module github.com/celpung/go-upload
+module github.com/celpung/go-upload/v2
 
 go 1.20
 
